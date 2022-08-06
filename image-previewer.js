@@ -41,17 +41,22 @@ class ImagePreviewer extends Application {
 Hooks.on('renderFilePicker', (app, html, data) => {
 	let imagePreviewer = new ImagePreviewer();
 	html.find('.file').hover(ev => {
-		// get new position for the previewer
-		let elementBox = ev.target.getBoundingClientRect()
-		let previewPos = {
-			x: elementBox.x + elementBox.width,
-			y: elementBox.y
-		}
-		// get the proper image path
-		let path = ev.target.dataset.path;
-		let fileExtension = path.split('.')[path.split('.').length - 1].toLowerCase();
-		if (fileExtension in CONST.IMAGE_FILE_EXTENSIONS) {
-			imagePreviewer.showPreview(path, previewPos);
+		if(ev.target.parentElement.getAttribute("class") == "directory files-list details-list"){
+			// get new position for the previewer
+			let elementBox = ev.target.getBoundingClientRect()
+			let previewPos = {
+				x: elementBox.x + elementBox.width,
+				y: elementBox.y
+			}
+			// get the proper image path
+			let path = ev.target.dataset.path;
+
+			if(path != null){
+				let fileExtension = path.split('.')[path.split('.').length - 1].toLowerCase();
+				if (fileExtension in CONST.IMAGE_FILE_EXTENSIONS) {
+					imagePreviewer.showPreview(path, previewPos);
+				}
+			}
 		}
 	}, ev => {
 		imagePreviewer.hoverOff();
